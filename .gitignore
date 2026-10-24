@@ -32,6 +32,5 @@ desktop.ini
 .vscode/
 *.iml
 
-# Local tooling state
+# Local tooling state (keep project skills tracked)
 .agents/
-.opencode/
