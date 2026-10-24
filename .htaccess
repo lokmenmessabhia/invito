@@ -1,0 +1,38 @@
+# Forward Authorization header to PHP
+<IfModule mod_rewrite.c>
+  RewriteCond %{HTTP:Authorization} ^(.+)$
+  RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+  # Deny access to config, includes, sql
+  RewriteRule ^(config|includes|sql)($|/) - [F,L]
+
+  # Remove .php extension from URLs
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.php -f
+  RewriteRule ^(.*)$ $1.php [L]
+</IfModule>
+
+<FilesMatch "\.(env|sql|md|log|bak|old|swp|save)$">
+  Require all denied
+</FilesMatch>
+
+# Internal maintenance scripts are CLI-only
+<FilesMatch "^(_.*\.php|schedule_backup\.bat)$">
+  Require all denied
+</FilesMatch>
+
+Options -Indexes
+
+# Security headers
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "no-referrer-when-downgrade"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), unload=(self)"
+</IfModule>
+
+# Prevent MIME sniffing
+<IfModule mod_mime.c>
+  Header always set X-Content-Type-Options "nosniff"
+</IfModule>

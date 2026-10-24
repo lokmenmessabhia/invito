@@ -1,0 +1,29 @@
+# Normalize text files to LF on commit
+* text=auto eol=lf
+
+*.php text
+*.html text
+*.css text
+*.js text
+*.json text
+*.md text
+*.sql text
+*.svg text
+*.htaccess text
+.gitignore text
+.gitattributes text
+
+# Windows scripts keep CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary media
+*.mp3 binary
+*.mp4 binary
+*.webm binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.ico binary
+*.gz binary
